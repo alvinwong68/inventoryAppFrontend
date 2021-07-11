@@ -1,11 +1,16 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import * as authActions from "./store/actions/auth";
 import { Redirect, Switch, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Home from "./pages/Home";
-import Account from "./pages/Account";
+//import Login from "./pages/Login";
+//import Home from "./pages/Home";
+//import Account from "./pages/Account";
 import NavigationHeader from "./components/ui/NavigationHeader";
+import Spinner from "./components/ui/Spinner";
+
+const Login = React.lazy(() => import("./pages/Login"));
+const Home = React.lazy(() => import("./pages/Home"));
+const Account = React.lazy(() => import("./pages/Account"));
 
 function App() {
   const dispatch = useDispatch();
@@ -24,19 +29,21 @@ function App() {
 
   if (!isAuthenticated) {
     return (
-      <Switch>
-        <Route path="/" exact>
-          <Login />
-        </Route>
-        <Route path="*">
-          <Redirect to="/" />
-        </Route>
-      </Switch>
+      <Suspense fallback={Spinner}>
+        <Switch>
+          <Route path="/" exact>
+            <Login />
+          </Route>
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Suspense>
     );
   }
 
   return (
-    <React.Fragment>
+    <Suspense fallback={Spinner}>
       <NavigationHeader userDetail={userDetail} />
       <Switch>
         {userDetail && userDetail.role === "Admin" && (
@@ -51,7 +58,7 @@ function App() {
           <Redirect to="/home" />
         </Route>
       </Switch>
-    </React.Fragment>
+    </Suspense>
   );
 }
 
