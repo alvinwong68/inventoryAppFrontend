@@ -6,7 +6,6 @@ export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_FAIL = "AUTH_FAIL";
 export const AUTH_LOGOUT = "AUTH_LOGOUT";
 
-export const AUTH_USERDETAIL = "AUTH_USERDETAIL";
 export const CLEAR_AUTH_USERDETAIL = "CLEAR_AUTH_USERDETAIL";
 
 export const CREATE_USER_ACC = "CREATE_USER_ACC";
@@ -26,12 +25,15 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token, userId) => {
+export const authSuccess = (token, userId, name, email, role) => {
   return (dispatch) => {
     dispatch({
       type: AUTH_SUCCESS,
       idToken: token,
       userId: userId,
+      name,
+      email, 
+      role
     });
   };
 };
@@ -50,6 +52,9 @@ export const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationDate");
     localStorage.removeItem("userId");
+    localStorage.removeItem("name");
+    localStorage.removeItem("email");
+    localStorage.removeItem("role");
     dispatch({
       type: AUTH_LOGOUT,
     });
@@ -84,8 +89,18 @@ export const auth = (email, password) => {
         localStorage.setItem("token", response.data.idToken);
         localStorage.setItem("expirationDate", expirationDate);
         localStorage.setItem("userId", response.data.localId);
-        dispatch(authSuccess(response.data.idToken, response.data.localId));
-        dispatch(authUserDetail(response.data.idToken));
+        localStorage.setItem("name", response.data.name);
+        localStorage.setItem("email", response.data.email);
+        localStorage.setItem("role", response.data.role);
+        dispatch(
+          authSuccess(
+            response.data.idToken,
+            response.data.localId,
+            response.data.name,
+            response.data.email,
+            response.data.role
+          )
+        );
         dispatch(checkAuthTimeout(response.data.expiresIn));
       })
       .catch((err) => {
@@ -105,8 +120,10 @@ export const authCheckState = () => {
         dispatch(logout());
       } else {
         const userId = localStorage.getItem("userId");
-        dispatch(authSuccess(token, userId));
-        dispatch(authUserDetail(token));
+        const name = localStorage.getItem("name");
+        const email = localStorage.getItem("email");
+        const role = localStorage.getItem("role");
+        dispatch(authSuccess(token, userId, name, email, role));
         dispatch(
           checkAuthTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000
@@ -114,25 +131,6 @@ export const authCheckState = () => {
         );
       }
     }
-  };
-};
-
-export const authUserDetail = (idToken) => {
-  return (dispatch) => {
-    let url =
-      "https://asia-east2-inventory-app-1aa4b.cloudfunctions.net/api/user/detail";
-    axios
-      .get(url, {
-        headers: {
-          Authorization: "Bearer " + idToken,
-        },
-      })
-      .then((response) => {
-        dispatch({ type: AUTH_USERDETAIL, payload: response.data });
-      })
-      .catch((err) => {
-        //console.log(err);
-      });
   };
 };
 

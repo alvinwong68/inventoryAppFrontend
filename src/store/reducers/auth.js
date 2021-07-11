@@ -3,7 +3,6 @@ import {
   AUTH_SUCCESS,
   AUTH_FAIL,
   AUTH_LOGOUT,
-  AUTH_USERDETAIL,
   CLEAR_AUTH_USERDETAIL,
   CREATE_USER_ACC,
   SET_CREATE_ERROR,
@@ -44,6 +43,11 @@ const authReducer = (state = initialState, action) => {
         userId: action.userId,
         error: null,
         loading: false,
+        userDetail: {
+          id: action.userId,
+          email: action.email,
+          role: action.role,
+        }
       };
     case AUTH_FAIL:
       return {
@@ -58,13 +62,6 @@ const authReducer = (state = initialState, action) => {
         token: null,
         userId: null,
         error: null,
-      };
-    }
-    case AUTH_USERDETAIL: {
-      let userDetail = action.payload;
-      return {
-        ...state,
-        userDetail,
       };
     }
     case CLEAR_AUTH_USERDETAIL: {

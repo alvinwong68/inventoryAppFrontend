@@ -1,5 +1,4 @@
 import axios from "axios";
-
 export const ADD_INVENTORY = "ADD_INVENTORY";
 export const SET_ADD_LOADING = "SET_ADD_LOADING";
 export const SET_ADD_ERROR = "SET_ADD_ERROR";
@@ -44,7 +43,6 @@ export const addInventory = (title, description, quantity) => {
 
 export const fetchInventory = () => {
   return (dispatch) => {
-    dispatch({ type: SET_FETCH_LOADING });
     let url =
       "https://asia-east2-inventory-app-1aa4b.cloudfunctions.net/api/inventories";
     axios
@@ -90,7 +88,7 @@ export const editInventory = (id, obj) => {
   return (dispatch) => {
     let url = `https://asia-east2-inventory-app-1aa4b.cloudfunctions.net/api/inventory/${id}`;
     axios
-      .put(url, obj ,{
+      .put(url, obj, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -107,7 +105,7 @@ export const editInventory = (id, obj) => {
 export const clearAddError = () => {
   return (dispatch) => {
     dispatch({
-      type: CLEAR_ADD_ERROR
-    })
-  } 
-}
+      type: CLEAR_ADD_ERROR,
+    });
+  };
+};
