@@ -94,7 +94,6 @@ const authReducer = (state = initialState, action) => {
     }
     case CREATE_USER_ACC: {
       const newUser = { ...action.payload };
-      console.log()
       const updatedUserList = [newUser, ...state.userDetailsList]
       return {
         ...state,
