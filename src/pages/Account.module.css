@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 3% 10%;
+  }
+  
+  .container h1 {
+    color: black;
+    font-size: 1.1rem;
+    margin: 2% 0;
+  }
+  
+  .container button {
+    cursor: pointer;
+    font: inherit;
+    color: black;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 4px;
+    padding: 0.5rem 0.5rem;
+    width: 10rem;
+  }
+  
+  .container button:hover {
+      background-color: grey;
+      border-color: black;
+  }
+  
+  .list__container {
+      display: flex;
+      flex-direction: column;
+      color: black;
+  }
+    
+  
