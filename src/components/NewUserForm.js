@@ -45,10 +45,10 @@ const NewUserForm = (props) => {
 
   return (
     <React.Fragment>
-      <h1 style={{ color: "black" }}>Add New Inventory</h1>
+      <h1 style={{ color: "black" }}>Add New Account</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className={classes.control}>
-          <label htmlFor="email">Your Email</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             id="email"
@@ -61,7 +61,7 @@ const NewUserForm = (props) => {
           ) : null}
         </div>
         <div className={classes.control}>
-          <label htmlFor="password">Your Password</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             id="password"

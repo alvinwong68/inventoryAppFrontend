@@ -2,6 +2,7 @@ import {
   ADD_INVENTORY,
   SET_ADD_LOADING,
   SET_ADD_ERROR,
+  CLEAR_ADD_ERROR,
   FETCH_INVENTORY,
   SET_FETCH_ERROR,
   SET_FETCH_LOADING,
@@ -43,6 +44,12 @@ const inventoryReducer = (state = initialState, action) => {
         addError: action.payload,
         addLoading: false,
       };
+    }
+    case CLEAR_ADD_ERROR: {
+      return {
+        ...state,
+        addError: null,
+      }
     }
     case SET_FETCH_LOADING: {
       return {

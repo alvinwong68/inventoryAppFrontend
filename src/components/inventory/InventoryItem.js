@@ -1,10 +1,15 @@
 import React from "react";
 import classes from "./InventoryItem.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as inventoryActions from "../../store/actions/inventory";
 
 const InventoryItem = (props) => {
   const dispatch = useDispatch();
+
+
+  const userDetail = useSelector((state) => {
+    return state.auth.userDetail
+  })
 
   const deleteInventoryHandle = (id) => {
     dispatch(inventoryActions.deleteInventory(id));
@@ -41,14 +46,14 @@ const InventoryItem = (props) => {
         >
           -
         </button>
-        <button
+        {userDetail && userDetail.role === "Admin" && <button
           style={{ color: "red" }}
           onClick={() => {
             deleteInventoryHandle(props.id);
           }}
         >
           X
-        </button>
+        </button>}
       </div>
     </div>
   );

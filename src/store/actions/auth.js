@@ -1,4 +1,5 @@
 import axios from "axios";
+import { CLEAR_ADD_ERROR } from "./inventory";
 
 export const AUTH_START = "AUTH_START";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
@@ -11,6 +12,7 @@ export const CLEAR_AUTH_USERDETAIL = "CLEAR_AUTH_USERDETAIL";
 export const CREATE_USER_ACC = "CREATE_USER_ACC";
 export const SET_CREATE_LOADING = "SET_CREATE_LOADING";
 export const SET_CREATE_ERROR = "SET_CREATE_ERROR;";
+export const CLEAR_CREATE_ERROR = "CLEAR_CREATE_ERROR";
 
 export const SET_FETCH_USERS_LOADING = "SET_FETCH_USERS_LOADING";
 export const SET_FETCH_USERS_ERROR = "SET_FETCH_USERS_ERROR";
@@ -72,7 +74,7 @@ export const auth = (email, password) => {
       returnSecureToken: true,
     };
     let url =
-      "http://localhost:5000/inventory-app-1aa4b/asia-east2/api/user/login";
+      "https://asia-east2-inventory-app-1aa4b.cloudfunctions.net/api/user/login";
     axios
       .post(url, authData)
       .then((response) => {
@@ -118,7 +120,7 @@ export const authCheckState = () => {
 export const authUserDetail = (idToken) => {
   return (dispatch) => {
     let url =
-      "http://localhost:5000/inventory-app-1aa4b/asia-east2/api/user/detail";
+      "https://asia-east2-inventory-app-1aa4b.cloudfunctions.net/api/user/detail";
     axios
       .get(url, {
         headers: {
@@ -141,57 +143,64 @@ export const clearUserDetail = () => {
 };
 
 export const createUser = (email, password, role, displayName) => {
-    return (dispatch) => {
-      dispatch({ type: SET_CREATE_LOADING });
-      let url =
-        "http://localhost:5000/inventory-app-1aa4b/asia-east2/api/user/create";
-      axios
-        .post(
-          url,
-          { email, password, role, displayName },
-          {
-            headers: {
-              Authorization: "Bearer " + localStorage.getItem("token"),
-            },
-          }
-        )
-        .then((res) => {
-          dispatch({
-            type: CREATE_USER_ACC,
-            payload: res.data,
-          });
-        })
-        .catch((err) => {
-          dispatch({
-            type: SET_CREATE_ERROR,
-            payload: err.response.data,
-          });
-        });
-    };
-  };
-
-  export const userList = () => {
-    return (dispatch) => {
-      dispatch({ type: SET_FETCH_USERS_LOADING });
-      let url =
-        "http://localhost:5000/inventory-app-1aa4b/asia-east2/api/users";
-      axios
-        .get(url, {
+  return (dispatch) => {
+    dispatch({ type: SET_CREATE_LOADING });
+    let url =
+      "https://asia-east2-inventory-app-1aa4b.cloudfunctions.net/api/user/create";
+    axios
+      .post(
+        url,
+        { email, password, role, displayName },
+        {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("token"),
           },
-        })
-        .then((res) => {
-          dispatch({
-            type: SET_FETCH_USERS,
-            payload: res.data.userList
-          });
-        })
-        .catch((err) => {
-          dispatch({
-            type: SET_FETCH_USERS_ERROR,
-            payload: err.response.data,
-          });
+        }
+      )
+      .then((res) => {
+        dispatch({
+          type: CREATE_USER_ACC,
+          payload: res.data,
         });
-    };
+      })
+      .catch((err) => {
+        dispatch({
+          type: SET_CREATE_ERROR,
+          payload: err.response.data,
+        });
+      });
   };
+};
+
+export const userList = () => {
+  return (dispatch) => {
+    dispatch({ type: SET_FETCH_USERS_LOADING });
+    let url = "https://asia-east2-inventory-app-1aa4b.cloudfunctions.net/api/users";
+    axios
+      .get(url, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        dispatch({
+          type: SET_FETCH_USERS,
+          payload: res.data.userList,
+        });
+      })
+      .catch((err) => {
+        dispatch({
+          type: SET_FETCH_USERS_ERROR,
+          payload: err.response.data,
+        });
+      });
+  };
+};
+
+export const clearAddUserError = () => {
+  return (dispatch) => {
+    dispatch({
+      type: CLEAR_ADD_ERROR,
+    });
+  };
+};

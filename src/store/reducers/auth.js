@@ -8,6 +8,7 @@ import {
   CREATE_USER_ACC,
   SET_CREATE_ERROR,
   SET_CREATE_LOADING,
+  CLEAR_CREATE_ERROR,
   SET_FETCH_USERS_LOADING,
   SET_FETCH_USERS_ERROR,
   SET_FETCH_USERS
@@ -85,9 +86,15 @@ const authReducer = (state = initialState, action) => {
         createUserError: action.payload,
       };
     }
-
+    case CLEAR_CREATE_ERROR: {
+        return {
+            ...state,
+            createUserError: null,
+        }
+    }
     case CREATE_USER_ACC: {
       const newUser = { ...action.payload };
+      console.log()
       const updatedUserList = [newUser, ...state.userDetailsList]
       return {
         ...state,

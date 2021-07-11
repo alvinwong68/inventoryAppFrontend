@@ -30,7 +30,8 @@ const Home = () => {
 
   const hideAddHandler = useCallback(() => {
     setShowAdd(false);
-  }, []);
+    dispatch(inventoryActions.clearAddError());
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(inventoryActions.fetchInventory());

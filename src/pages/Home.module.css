@@ -4,6 +4,7 @@
   padding: 3% 10%;
 }
 
+
 .container h1 {
   color: black;
   font-size: 1.1rem;
@@ -22,13 +23,12 @@
 }
 
 .container button:hover {
-    background-color: grey;
-    border-color: black;
+  background-color: grey;
+  border-color: black;
 }
 
 .list__container {
-    display: flex;
-    flex-direction: column;
-    color: black;
+  display: flex;
+  flex-direction: column;
+  color: black;
 }
-  
